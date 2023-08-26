@@ -1,50 +1,50 @@
-class DietModel {
+class PopularDietsModel {
   String name;
   String iconPath;
   String level;
   String duration;
   String calories;
-  bool viewIsSelected;
+  bool boxIsSelected;
 
-  DietModel({
+  PopularDietsModel({
     required this.name,
     required this.iconPath,
     required this.level,
     required this.duration,
     required this.calories,
-    required this.viewIsSelected,
+    required this.boxIsSelected,
   });
 
-  static List<DietModel> getDiets() {
-    List<DietModel> diets = [];
+  static List<PopularDietsModel> getPopularDiets() {
+    List<PopularDietsModel> popularDiets = [];
 
-    diets.add(DietModel(
+    popularDiets.add(PopularDietsModel(
       iconPath: 'assets/icons/plate.svg',
       name: 'Salad',
       level: 'Easy',
       duration: '15 min',
       calories: '420 kcal',
-      viewIsSelected: false,
+      boxIsSelected: false,
     ));
 
-    diets.add(DietModel(
+    popularDiets.add(PopularDietsModel(
       iconPath: 'assets/icons/pancakes.svg',
       name: 'Cake',
       level: 'Easy',
       duration: '15 min',
       calories: '420 kcal',
-      viewIsSelected: false,
+      boxIsSelected: false,
     ));
 
-    diets.add(DietModel(
+    popularDiets.add(PopularDietsModel(
       iconPath: 'assets/icons/pie.svg',
       name: 'Pie',
       level: 'Easy',
       duration: '15 min',
       calories: '420 kcal',
-      viewIsSelected: false,
+      boxIsSelected: false,
     ));
 
-    return diets;
+    return popularDiets;
   }
 }

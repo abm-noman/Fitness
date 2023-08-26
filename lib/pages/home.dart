@@ -1,5 +1,6 @@
 import 'package:fitness/models/catagory_model.dart';
 import 'package:fitness/models/diet_model.dart';
+import 'package:fitness/models/popular_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,6 +14,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<CatagoryModel> catagories = [];
   List<DietModel> diets = [];
+  List<PopularDietsModel> popularDiets = [];
+  
 
   void _getCatagories() {
     catagories = CatagoryModel.getCatagories();
@@ -25,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   void _getInitialInfo(){
     catagories =  CatagoryModel.getCatagories();
     diets = DietModel.getDiets(); 
+    popularDiets = PopularDietsModel.getPopularDiets();
   }
 
   @override
@@ -39,18 +43,107 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: appBar(),
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           _searchField(),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           _catagoriesSection(),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
-          _dietSection()
+          _dietSection(),
+          const SizedBox(
+            height: 40,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Popular Diets',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ListView.separated(
+                itemCount: popularDiets.length,
+                shrinkWrap: true,
+                separatorBuilder: (context, index) => const SizedBox(height: 25,),
+                padding: const EdgeInsets.only(left: 20),
+                itemBuilder: (context, index) {
+                  return Container( 
+                    height: 115,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SvgPicture.asset(
+                          popularDiets[index].iconPath,
+                          width: 100,
+                          height: 100,
+                          ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              popularDiets[index].name,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600
+                                ),
+                              ),
+                            Text(
+                              popularDiets[index].level + ' | ' + popularDiets[index].duration + ' | ' + popularDiets[index].calories,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600
+                                ),
+                              ),
+                          ],
+                        )
+                        GestureDetector(
+                          onTap: () {},
+                        )
+                        SvgPicture.asset(
+                          'assets/icons/button.svg',
+                          width: 20,
+                          height: 20,
+                        )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: popularDiets[index].boxIsSelected ? Colors.white : Colors.transparent,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: popularDiets[index].boxIsSelected ? [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.11),
+                          spreadRadius: 0,
+                          blurRadius: 40,
+                        ),
+                      ] : []
+                      
+                    ),
+                    color: Colors.black,
+                    height: 115,
+                  );
+                },
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
         ],
       ),
     );
@@ -60,8 +153,8 @@ class _HomePageState extends State<HomePage> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 20),
               child: Text(
                 'Recommendation\nfor Diet',
                 style: TextStyle(
@@ -71,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Container(
@@ -91,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                       SvgPicture.asset(diets[index].iconPath),
                       Text(
                         diets[index].name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 14,
                           fontWeight: FontWeight.w600
@@ -99,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       Text(
                         diets[index].level + ' | ' + diets[index].duration + ' | ' + diets[index].calories,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 14,
                           fontWeight: FontWeight.w600
@@ -127,15 +220,15 @@ class _HomePageState extends State<HomePage> {
                               ),
                               borderRadius: BorderRadius.circular(15)
                           ),
-                        )
+                        ),
                       ),
                     // ]),
                     // ),
                 }, 
-                separatorBuilder: (context, index) => SizedBox(width: 25,), 
+                separatorBuilder: (context, index) => const SizedBox(width: 25,), 
                 itemCount: diets.length,
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 ),
             ),
           ],
@@ -146,8 +239,8 @@ class _HomePageState extends State<HomePage> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 20),
               child: Text(
                 'Categories',
                 style: TextStyle(
@@ -157,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Container(
@@ -166,12 +259,12 @@ class _HomePageState extends State<HomePage> {
               child: ListView.separated(
                   itemCount: catagories.length,
                   scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 20,
                     right: 20
                   )
                   ),
-                  separatorBuilder: (context, index) => SizedBox(
+                  separatorBuilder: (context, index) => const SizedBox(
                         width: 25,
                       ),
                   itemBuilder: (context, index) {
@@ -187,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 50,
                             height: 50,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle
                             ),
@@ -198,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Text(
                             catagories[index].name,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontWeight: FontWeight.w600
@@ -216,7 +309,7 @@ class _HomePageState extends State<HomePage> {
 
   Container _searchField() {
     return Container(
-      margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -230,9 +323,9 @@ class _HomePageState extends State<HomePage> {
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.amber,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintText: 'Search',
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 14,
             ),
@@ -246,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    VerticalDivider(
+                    const VerticalDivider(
                       color: Colors.grey,
                       indent: 10,
                       endIndent: 10,
@@ -270,7 +363,7 @@ class _HomePageState extends State<HomePage> {
 
   AppBar appBar() {
     return AppBar(
-        title: Text(
+        title: const Text(
           'Breakfast',
           style: TextStyle(
             color: Colors.black,
@@ -284,14 +377,14 @@ class _HomePageState extends State<HomePage> {
         leading: GestureDetector(
           onTap: () {},
           child: Container(
-            margin: EdgeInsets.all(left: 20),
+            margin: const EdgeInsets.all(left: 20),
             alignment: Alignment.center,
             child: SvgPicture.asset(
               'assets/icons/Arrow - Left 2.svg',
               width: 20,
               height: 20,
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xffF7F8F8),
                 borderRadius: BorderRadius.horizontal(10)),
           ),
@@ -300,7 +393,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () {},
             child: Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               alignment: Alignment.center,
               width: 37,
               child: SvgPicture.asset(
@@ -308,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                 width: 5,
                 height: 5,
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color(0xffF7F8F8),
                   borderRadius: BorderRadius.horizontal(10)),
             ),
